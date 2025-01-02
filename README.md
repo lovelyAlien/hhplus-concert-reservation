@@ -78,5 +78,6 @@ https://github.com/users/lovelyAlien/projects/4
 </details>
 
 ## ERD
-![콘서트 예약](https://github.com/user-attachments/assets/00488471-d542-42ce-bcd1-cc811be1989c)
+![콘서트 예약 (1)](https://github.com/user-attachments/assets/e6d5dd45-f392-44d8-953a-c3b8d096e979)
+
 
