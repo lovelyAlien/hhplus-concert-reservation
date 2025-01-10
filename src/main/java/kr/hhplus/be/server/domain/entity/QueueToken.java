@@ -9,6 +9,9 @@ import java.util.UUID;
 @Getter
 @Entity
 @Table(name = "queue_token")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class QueueToken {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,13 +51,13 @@ public class QueueToken {
   }
 
   public static QueueToken createNewToken(Long userId, Long concertId, LocalDateTime expiredAt) {
-    QueueToken token = new QueueToken();
-    token.uuid = UUID.randomUUID().toString();
-    token.userId = userId;
-    token.concertId = concertId;
-    token.status = Status.WAIT;
-    token.createdAt = LocalDateTime.now();
-    token.expiredAt = expiredAt;
-    return token;
+    return QueueToken.builder()
+      .uuid(UUID.randomUUID().toString())
+      .userId(userId)
+      .concertId(concertId)
+      .status(Status.WAIT)
+      .createdAt(LocalDateTime.now())
+      .expiredAt(expiredAt)
+      .build();
   }
 }
