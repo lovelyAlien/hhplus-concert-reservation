@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.presentation.controller;
 
+import kr.hhplus.be.server.domain.enums.SeatStatus;
 import kr.hhplus.be.server.presentation.dto.ConcertDateResponse;
 import kr.hhplus.be.server.application.facade.ConcertFacade;
 import kr.hhplus.be.server.presentation.dto.ConcertSeatResponse;
@@ -36,7 +37,7 @@ public class ConcertController {
   ) {
     // (실제 로직이라면 token 유효성, date·userId 검증 로직이 필요)
     // 단순 하드코딩 응답
-    List<ConcertSeatResponse> response = concertFacade.findAvailableSeats(scheduleId);
+    List<ConcertSeatResponse> response = concertFacade.findAvailableSeats(scheduleId, SeatStatus.AVAILABLE);
     return ResponseEntity.ok(response);
   }
 }

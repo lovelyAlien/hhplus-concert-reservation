@@ -14,6 +14,7 @@ public class ConcertSchedule {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(name = "concert_id")
   private Long concertId;
 
   @Column(name = "status", nullable = false)

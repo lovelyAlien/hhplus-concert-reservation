@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class ConcertScheduleService {
   private final ConcertScheduleRepository concertScheduleRepository;
   // 예약 가능 날짜 조회
-  public List<ConcertDateResponse> findAvailableDates(Long concertId, LocalDateTime now) {
+  public List<ConcertDateResponse> findDates(Long concertId, LocalDateTime now) {
     List<ConcertSchedule> schedules = concertScheduleRepository.findByConcertIdAndStartAtAfter(
       concertId, now
     );

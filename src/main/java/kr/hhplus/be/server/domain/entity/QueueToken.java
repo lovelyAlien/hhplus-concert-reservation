@@ -1,6 +1,7 @@
 package kr.hhplus.be.server.domain.entity;
 
 import jakarta.persistence.*;
+import kr.hhplus.be.server.domain.enums.QueueTokenStatus;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -25,39 +26,41 @@ public class QueueToken {
   private Long concertId;
 
   @Enumerated(EnumType.STRING)
-  private Status status;
+  private QueueTokenStatus status;
 
   @Column(name = "created_at")
   private LocalDateTime createdAt;
 
-  @Column(name = "expired_at")
-  private LocalDateTime expiredAt;
+  @Column(name = "expire_at")
+  private LocalDateTime expireAt;
 
   // Getters and Setters
 
-  public enum Status {
-    WAIT,
-    ACTIVE,
-    EXPIRED
-  }
-
   // 상태 변경 메서드
   public void expire() {
-    if (this.status == Status.EXPIRED) {
+    if (this.status == QueueTokenStatus.EXPIRED) {
       throw new IllegalStateException("Token is already expired.");
     }
-    this.status = Status.EXPIRED;
-    this.expiredAt = LocalDateTime.now(); // 만료 시점 업데이트
+    this.status = QueueTokenStatus.EXPIRED;
+    this.expireAt = LocalDateTime.now(); // 만료 시점 업데이트
   }
 
-  public static QueueToken createNewToken(Long userId, Long concertId, LocalDateTime expiredAt) {
+  public void activate() {
+    this.status = QueueTokenStatus.ACTIVE;
+  }
+
+  public void setExpiration(LocalDateTime expireAt) {
+    this.expireAt = expireAt;
+  }
+
+  public static QueueToken createNewToken(Long userId, Long concertId, LocalDateTime now, LocalDateTime expireAt) {
     return QueueToken.builder()
       .uuid(UUID.randomUUID().toString())
       .userId(userId)
       .concertId(concertId)
-      .status(Status.WAIT)
-      .createdAt(LocalDateTime.now())
-      .expiredAt(expiredAt)
+      .status(QueueTokenStatus.WAIT)
+      .createdAt(now)
+      .expireAt(expireAt)
       .build();
   }
 }

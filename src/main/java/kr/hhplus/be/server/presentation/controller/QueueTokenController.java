@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -21,7 +23,7 @@ public class QueueTokenController {
     @RequestParam(value="userId", required = false) Long userId,
   @RequestParam(value="concertId", required = false) Long concertId) {
 
-    String mockToken = queueTokenService.createQueueToken(userId, concertId);
-    return ResponseEntity.ok(mockToken);
+    String token = queueTokenService.createToken(userId, concertId, LocalDateTime.now());
+    return ResponseEntity.ok(token);
   }
 }

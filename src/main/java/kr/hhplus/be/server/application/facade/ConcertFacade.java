@@ -1,6 +1,7 @@
 package kr.hhplus.be.server.application.facade;
 
 import kr.hhplus.be.server.application.service.SeatService;
+import kr.hhplus.be.server.domain.enums.SeatStatus;
 import kr.hhplus.be.server.presentation.dto.ConcertDateResponse;
 import kr.hhplus.be.server.application.service.ConcertScheduleService;
 import kr.hhplus.be.server.presentation.dto.ConcertSeatResponse;
@@ -18,11 +19,11 @@ public class ConcertFacade {
   private final SeatService seatService;
 
   public List<ConcertDateResponse> findAvailableDates(Long concertId, LocalDateTime now) {
-    return concertScheduleService.findAvailableDates(concertId, now);
+    return concertScheduleService.findDates(concertId, now);
   }
 
-  public List<ConcertSeatResponse> findAvailableSeats(Long scheduleId) {
-    return seatService.findAvailableSeats(scheduleId);
+  public List<ConcertSeatResponse> findAvailableSeats(Long scheduleId, SeatStatus status) {
+    return seatService.findSeats(scheduleId, status);
   }
 
 }
