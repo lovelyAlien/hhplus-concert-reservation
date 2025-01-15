@@ -27,4 +27,7 @@ public class Seat {
   private BigDecimal price;
 
   // Getters and Setters
+  public void setStatus(SeatStatus status) {
+    this.status = status;
+  }
 }

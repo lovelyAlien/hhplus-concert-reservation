@@ -1,30 +1,50 @@
 package kr.hhplus.be.server.domain.entity;
 
 import jakarta.persistence.*;
+import kr.hhplus.be.server.domain.enums.ReservationStatus;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "reservation")
 public class Reservation {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "user_id", nullable = false)
-  private User user;
+  @Column(name = "user_id", nullable = false)
+  private Long userId;
 
-  @ManyToOne
-  @JoinColumn(name = "seat_id", nullable = false)
-  private Seat seat;
+  @Column(name = "seat_id", nullable = false)
+  private Long seatId;
 
   @Enumerated(EnumType.STRING)
-  private Status status;
+  @Column(name = "status", nullable = false)
+  private ReservationStatus status;
+
+  @Column(name = "created_at")
+  private LocalDateTime createdAt;
+
+  @Column(name = "expired_at")
+  private LocalDateTime expiredAt;
 
   // Getters and Setters
-
-  public enum Status {
-    PENDING,
-    CONFIRMED,
-    CANCELLED
+  public static Reservation createNewReservation(Long userId, Long seatId, ReservationStatus status,
+                                                 LocalDateTime now, LocalDateTime expiredAt) {
+    return Reservation.builder()
+      .userId(userId)
+      .seatId(seatId)
+      .status(status)
+      .createdAt(now)
+      .expiredAt(expiredAt)
+      .build();
   }
 }
