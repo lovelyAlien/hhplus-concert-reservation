@@ -1,24 +1,29 @@
 package kr.hhplus.be.server.domain.entity;
 
 import jakarta.persistence.*;
+import kr.hhplus.be.server.domain.enums.PaymentStatus;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "payment")
 public class Payment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "user_id", nullable = false)
-  private User user;
+  @Column(name = "user_id", nullable = false)
+  private Long userId ;
 
-  @ManyToOne
-  @JoinColumn(name = "reservation_id", nullable = false)
-  private Reservation reservation;
+  @Column(name = "reservation_id", nullable = false)
+  private Long reservationId;
 
   private BigDecimal amount;
 
@@ -26,13 +31,18 @@ public class Payment {
   private LocalDateTime paidAt;
 
   @Enumerated(EnumType.STRING)
-  private Status status;
+  @Column(name = "status", nullable = false)
+  private PaymentStatus status;
 
   // Getters and Setters
-
-  public enum Status {
-    PENDING,
-    PAID,
-    FAILED
+  public static Payment create(
+    long reservationId, long userId, BigDecimal amount, LocalDateTime paidAt, PaymentStatus status) {
+    return Payment.builder()
+      .reservationId(reservationId)
+      .userId(userId)
+      .amount(amount)
+      .paidAt(paidAt)
+      .status(status)
+      .build();
   }
 }

@@ -2,16 +2,16 @@ package kr.hhplus.be.server.presentation.dto;
 
 public class SeatReserveRequest {
 
-  private String userId;
-  private String seatId;
+  private Long userId;
+  private Long seatId;
 
-  public SeatReserveRequest(String userId, String seatId) {
+  public SeatReserveRequest(Long userId, Long seatId) {
     this.userId = userId;
     this.seatId = seatId;
   }
 
-  public String getUserId() { return userId; };
-  public String getSeatId() { return seatId;}
+  public Long getUserId() { return userId; };
+  public Long getSeatId() { return seatId;}
 
 
 }

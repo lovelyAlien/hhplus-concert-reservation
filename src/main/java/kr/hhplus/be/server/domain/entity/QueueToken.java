@@ -53,7 +53,7 @@ public class QueueToken {
     this.expireAt = expireAt;
   }
 
-  public static QueueToken createNewToken(Long userId, Long concertId, LocalDateTime now, LocalDateTime expireAt) {
+  public static QueueToken create(Long userId, Long concertId, LocalDateTime now, LocalDateTime expireAt) {
     return QueueToken.builder()
       .uuid(UUID.randomUUID().toString())
       .userId(userId)

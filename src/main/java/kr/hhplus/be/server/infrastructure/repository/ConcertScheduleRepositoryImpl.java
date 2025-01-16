@@ -15,6 +15,6 @@ public class ConcertScheduleRepositoryImpl implements ConcertScheduleRepository 
 
   @Override
   public List<ConcertSchedule> findByConcertIdAndStartAtAfter(Long concertId, LocalDateTime localDateTime) {
-    return null;
+    return concertScheduleJpaRepository.findByConcertIdAndStartAtAfter(concertId, localDateTime);
   }
 }

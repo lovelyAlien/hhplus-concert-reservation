@@ -20,10 +20,6 @@ public class QueueTokenService {
 
   @Transactional
   public String createToken(Long userId, Long concertId, LocalDateTime now) {
-
-    // 기존 토큰 만료
-    expireTokens(userId, concertId);
-
     // 새 토큰 생성 및 반환
     QueueToken newToken = createAndSaveNewToken(userId, concertId, now);
 
@@ -45,15 +41,16 @@ public class QueueTokenService {
     return tokens.size();
   }
 
-  private void expireTokens(Long userId, Long concertId) {
-    List<QueueToken> nonExpiredTokens = queueTokenRepository.findNonExpiredTokens(
-      userId, concertId, QueueTokenStatus.EXPIRED);
-
-    nonExpiredTokens.forEach(QueueToken::expire);
+  public int expireToken(List<QueueToken> tokensToExpire) {
+    for(QueueToken token : tokensToExpire) {
+      token.expire();
+    }
+    List<QueueToken> tokens = queueTokenRepository.saveAll(tokensToExpire);
+    return tokens.size();
   }
 
   private QueueToken createAndSaveNewToken(Long userId, Long concertId, LocalDateTime now) {
-    QueueToken newToken = QueueToken.createNewToken(userId, concertId, now, now.plusMinutes(10));
+    QueueToken newToken = QueueToken.create(userId, concertId, now, now.plusMinutes(10));
     return queueTokenRepository.save(newToken);
   }
 }

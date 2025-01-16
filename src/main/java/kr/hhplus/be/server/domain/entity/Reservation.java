@@ -33,18 +33,22 @@ public class Reservation {
   @Column(name = "created_at")
   private LocalDateTime createdAt;
 
-  @Column(name = "expired_at")
-  private LocalDateTime expiredAt;
+  @Column(name = "expire_at")
+  private LocalDateTime expireAt;
+
+  public void setStatus(ReservationStatus status) {
+    this.status = status;
+  }
 
   // Getters and Setters
-  public static Reservation createNewReservation(Long userId, Long seatId, ReservationStatus status,
-                                                 LocalDateTime now, LocalDateTime expiredAt) {
+  public static Reservation create(Long userId, Long seatId, ReservationStatus status,
+                                                 LocalDateTime now, LocalDateTime expireAt) {
     return Reservation.builder()
       .userId(userId)
       .seatId(seatId)
       .status(status)
       .createdAt(now)
-      .expiredAt(expiredAt)
+      .expireAt(expireAt)
       .build();
   }
 }

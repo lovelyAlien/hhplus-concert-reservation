@@ -15,11 +15,6 @@ public class QueueTokenRepositoryImpl implements QueueTokenRepository {
   private final QueueTokenJpaRepository queueTokenJpaRepository;
 
   @Override
-  public List<QueueToken> findNonExpiredTokens(Long userId, Long concertId, QueueTokenStatus status) {
-    return queueTokenJpaRepository.findNonExpiredTokens(userId, concertId, status);
-  }
-
-  @Override
   public QueueToken save(QueueToken tokens) {
     return queueTokenJpaRepository.save(tokens);
   }

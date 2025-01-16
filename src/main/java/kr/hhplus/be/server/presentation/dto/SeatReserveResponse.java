@@ -1,13 +1,9 @@
 package kr.hhplus.be.server.presentation.dto;
 
-public class SeatReserveResponse {
-  private String status;   // ex) "SUCCESS", "FAIL"
-  private String message;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-  public SeatReserveResponse(String status, String message) {
-    this.status = status;
-    this.message = message;
-  }
-  public String getStatus() { return status; }
-  public String getMessage() { return message; }
-}
+@Schema(description = "예약 가능 여부 반환합니다.")
+public record SeatReserveResponse(
+  @Schema(description = "예약 가능 여부")
+  boolean isAvailable
+) {}
