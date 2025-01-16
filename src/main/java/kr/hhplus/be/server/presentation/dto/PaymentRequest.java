@@ -1,16 +1,15 @@
 package kr.hhplus.be.server.presentation.dto;
 
-public class PaymentRequest {
-  // 결제
-  // userId, reservationId;
-  //
-  private String userId;
-  private String reservationId;
-  private String date;   // "2025-01-10" 등
-  private String seatId;
+import java.math.BigDecimal;
 
-  public String getUserId() { return userId; }
-  public String getReservationId() { return reservationId; }
-  public String getDate() { return date; }
-  public String getSeatId() { return seatId; }
+public class PaymentRequest {
+  private Long userId;
+  private Long reservationId;
+  private Long seatId;
+  private BigDecimal amount;
+
+  public Long getUserId() { return userId; }
+  public Long getReservationId() { return reservationId; }
+  public Long getSeatId() { return seatId; }
+  public BigDecimal getAmount() { return amount; }
 }

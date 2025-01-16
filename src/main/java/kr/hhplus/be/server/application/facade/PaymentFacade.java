@@ -1,11 +1,14 @@
 package kr.hhplus.be.server.application.facade;
 
 import kr.hhplus.be.server.application.service.*;
+import kr.hhplus.be.server.domain.dto.PointResult;
 import kr.hhplus.be.server.domain.entity.QueueToken;
 import kr.hhplus.be.server.domain.enums.PaymentStatus;
 import kr.hhplus.be.server.domain.enums.QueueTokenStatus;
 import kr.hhplus.be.server.domain.enums.ReservationStatus;
 import kr.hhplus.be.server.domain.enums.SeatStatus;
+import kr.hhplus.be.server.presentation.dto.PaymentResponse;
+import kr.hhplus.be.server.presentation.dto.PointResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,15 +27,16 @@ public class PaymentFacade {
   private final SeatService seatService;
   private final ReservationService reservationService;
 
-  public void processPayment(
-    long reservationId,long seatId, long userId, String uuid,
-    BigDecimal amount, LocalDateTime now) {
+  @Transactional
+  public PaymentResponse processPayment(
+    long reservationId,long seatId, long userId,
+    String uuid, BigDecimal amount, LocalDateTime now) {
 
     // 1. 토큰 조회
     QueueToken token = queueTokenService.getToken(uuid, QueueTokenStatus.ACTIVE);
     // 2. 예약 만료 및 상태 업데이트
     if (handleExpiredReservation(reservationId, seatId)) {
-      throw new IllegalStateException("Reservation is expired and cannot proceed with payment.");
+      return new PaymentResponse("FAIL", "Reservation is expired and cannot proceed with payment.");
     }
     // 3. 포인트 차감
     pointService.pay(userId, amount);
@@ -43,6 +47,19 @@ public class PaymentFacade {
       now, PaymentStatus.PAID);
     // 6. 토큰 만료
     queueTokenService.expireToken(List.of(token));
+
+    return new PaymentResponse("SUCCESS", "Payment processed successfully.");
+  }
+
+  public PointResponse getPoint(Long userId) {
+    PointResult point = pointService.getPoint(userId);
+    return new PointResponse(point.getBalance());
+  }
+
+  @Transactional
+  public PointResponse chargePoint(Long userId, BigDecimal amount) {
+    BigDecimal balance = pointService.chargePoint(userId, amount);
+    return new PointResponse(balance);
   }
 
   private boolean handleExpiredReservation(long reservationId, long seatId) {
