@@ -21,9 +21,7 @@ public class QueueTokenService {
   @Transactional
   public String createToken(Long userId, Long concertId, LocalDateTime now) {
     // 새 토큰 생성 및 반환
-    QueueToken newToken = createAndSaveNewToken(userId, concertId, now);
-
-    return newToken.getUuid();
+    return createAndSaveNewToken(userId, concertId, now).getUuid();
   }
 
   public QueueToken getToken(String uuid, QueueTokenStatus status) {
