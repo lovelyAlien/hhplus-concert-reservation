@@ -18,11 +18,8 @@ public class SeatService {
 
   private final SeatRepository seatRepository;
 
-  public List<ConcertSeatResponse> findSeats(Long scheduleId, SeatStatus status) {
-    List<Seat> seats = seatRepository.findByScheduleIdAndStatus(scheduleId, status);
-    return seats.stream()
-      .map(seat -> new ConcertSeatResponse(seat.getSeatNo(), seat.getStatus()))
-      .collect(Collectors.toList());
+  public List<Seat> findSeats(Long scheduleId, SeatStatus status) {
+    return seatRepository.findByScheduleIdAndStatus(scheduleId, status);
   }
 
   public Seat reserveSeat(long seatId) {
