@@ -28,4 +28,9 @@ public class QueueTokenRepositoryImpl implements QueueTokenRepository {
   public Optional<QueueToken> findByUuidAndStatus(String uuid, QueueTokenStatus status) {
     return queueTokenJpaRepository.findByUuidAndStatus(uuid, status);
   }
+
+  @Override
+  public QueueToken findByUuid(String uuid) {
+    return queueTokenJpaRepository.findByUuid(uuid);
+  }
 }

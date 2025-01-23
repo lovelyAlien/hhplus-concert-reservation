@@ -11,5 +11,7 @@ public interface QueueTokenRepository {
   QueueToken save(QueueToken queueToken);
   List<QueueToken> saveAll(List<QueueToken> tokens);
   Optional<QueueToken> findByUuidAndStatus(String uuid, QueueTokenStatus status);
+  QueueToken findByUuid(String uuid);
+
 
 }

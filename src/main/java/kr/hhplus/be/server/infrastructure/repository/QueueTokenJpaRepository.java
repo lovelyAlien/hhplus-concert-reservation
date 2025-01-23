@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface QueueTokenJpaRepository extends JpaRepository<QueueToken, Long> {
 
   Optional<QueueToken> findByUuidAndStatus(String uuid, QueueTokenStatus status);
+  QueueToken findByUuid(String uuid);
 }

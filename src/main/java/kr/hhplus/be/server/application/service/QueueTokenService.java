@@ -1,6 +1,7 @@
 package kr.hhplus.be.server.application.service;
 
-import kr.hhplus.be.server.common.error.InvalidTokenException;
+import kr.hhplus.be.server.common.error.TokenErrorType;
+import kr.hhplus.be.server.common.error.TokenInvalidException;
 import kr.hhplus.be.server.domain.entity.QueueToken;
 import kr.hhplus.be.server.domain.enums.QueueTokenStatus;
 import kr.hhplus.be.server.domain.repository.QueueTokenRepository;
@@ -21,14 +22,12 @@ public class QueueTokenService {
   @Transactional
   public String createToken(Long userId, Long concertId, LocalDateTime now) {
     // 새 토큰 생성 및 반환
-    QueueToken newToken = createAndSaveNewToken(userId, concertId, now);
-
-    return newToken.getUuid();
+    return createAndSaveNewToken(userId, concertId, now).getUuid();
   }
 
   public QueueToken getToken(String uuid, QueueTokenStatus status) {
     Optional<QueueToken> opt = queueTokenRepository.findByUuidAndStatus(uuid, status);
-    return opt.orElseThrow(() -> new InvalidTokenException("Not found token"));
+    return opt.orElseThrow(() -> new TokenInvalidException(TokenErrorType.TOKEN_NOT_FOUND));
   }
 
   public int updateToken(List<QueueToken> tokensToUpdate, LocalDateTime now) {
